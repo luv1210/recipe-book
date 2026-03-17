@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= recipe.title %> - Chef's Table</title>
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  <div class="container">
+    <div class="recipe-detail">
+      <div class="recipe-header">
+        <% if (recipe.image) { %>
+          <div class="recipe-image-container">
+            <img src="<%= recipe.image %>" alt="<%= recipe.title %>">
+          </div>
+        <% } %>
+        <div class="recipe-info-container">
+          <h1 style="color: var(--primary-color); margin-top: 0;"><%= recipe.title %></h1>
+          <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Shared by <strong><%= recipe.author.username %></strong> on <%= recipe.createdAt.toLocaleDateString() %></p>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="color: var(--accent-color);">Ingredients</h3>
+            <ul style="padding-left: 1.5rem;">
+              <% recipe.ingredients.forEach(function(ingredient) { %>
+                <li style="margin-bottom: 0.5rem;"><%= ingredient %></li>
+              <% }); %>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <h3 style="color: var(--accent-color);">Instructions</h3>
+        <p style="line-height: 1.6;"><%= recipe.instructions %></p>
+      </div>
+
+      <div class="comment-section">
+        <h3 style="color: var(--primary-color);">Comments (<%= recipe.comments.length %>)</h3>
+        <% if (user) { %>
+          <form action="/recipes/<%= recipe._id %>/comments" method="POST" style="margin-bottom: 2rem;">
+            <div class="form-group">
+              <textarea name="text" rows="3" placeholder="Write a comment..." required></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Post Comment</button>
+          </form>
+        <% } else { %>
+          <p><a href="/login">Login</a> to leave a comment.</p>
+        <% } %>
+        
+        <div id="comments">
+          <% recipe.comments.forEach(function(comment) { %>
+            <div class="comment">
+              <span class="comment-author"><%= comment.author.username %></span>
+              <p style="margin: 0.5rem 0;"><%= comment.text %></p>
+              <span style="font-size: 0.8rem; color: #999;"><%= comment.createdAt.toLocaleDateString() %></span>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

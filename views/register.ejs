@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Chef's Table</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <div class="container">
+    <div style="max-width: 400px; margin: 4rem auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h1 style="color: var(--primary-color); text-align: center;">Join Our Culinary Hub</h1>
+      <% if (error) { %>
+        <p class="error-msg" style="text-align: center;"><%= error %></p>
+      <% } %>
+      <form action="/register" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Pick a username..." required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a strong password..." required>
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" name="role">
+            <option value="user">User (Share and discover)</option>
+            <option value="admin">Admin (Manage kitchen)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+      </form>
+      <p style="text-align: center; margin-top: 1.5rem; color: #666;">Already a member? <a href="/login" style="color: var(--accent-color);">Sign in here!</a></p>
+    </div>
+  </div>
+</body>
+</html>

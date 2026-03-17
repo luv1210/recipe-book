@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Chef's Table</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <div class="container">
+    <div style="max-width: 400px; margin: 4rem auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h1 style="color: var(--primary-color); text-align: center;">Welcome Back, Chef!</h1>
+      <% if (error) { %>
+        <p class="error-msg" style="text-align: center;"><%= error %></p>
+      <% } %>
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username..." required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password..." required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+      </form>
+      <p style="text-align: center; margin-top: 1.5rem; color: #666;">New here? <a href="/register" style="color: var(--accent-color);">Join our kitchen!</a></p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<header>
+  <nav>
+    <div class="logo"><a href="/" style="margin-left: 0; font-size: 1.5rem;">Chef's Table</a></div>
+    <div>
+      <a href="/">Recipes</a>
+      <% if (user) { %>
+        <a href="/my-recipes">My Recipes</a>
+        <a href="/recipes/new">New Recipe</a>
+        <a href="/logout">Logout (<%= user.username %>)</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <% } %>
+    </div>
+  </nav>
+</header>

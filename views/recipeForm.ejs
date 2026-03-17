@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Recipe - Chef's Table</title>
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+  
+  <div class="container">
+    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+      <h1 style="color: var(--primary-color);">Share Your Culinary Secret</h1>
+      <form action="/recipes" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Recipe Title</label>
+          <input id="title" name="title" type="text" placeholder="Enter recipe name..." required>
+        </div>
+        <div class="form-group">
+          <label for="image">Recipe Image</label>
+          <input id="image" name="image" type="file" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label for="ingredients">Ingredients (Comma-separated)</label>
+          <input id="ingredients" name="ingredients" type="text" placeholder="Flour, Sugar, Eggs, Milk..." required>
+        </div>
+        <div class="form-group">
+          <label for="instructions">Cooking Instructions</label>
+          <textarea id="instructions" name="instructions" rows="6" placeholder="Describe the cooking process..." required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Publish Recipe</button>
+      </form>
+    </div>
+  </div>
+</%-></body>
+</html>
