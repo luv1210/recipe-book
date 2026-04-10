@@ -3,22 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipes - Chef's Table</title>
-  <link href="/css/style.css" rel="stylesheet">
+  <title>Discover Recipes - Chef's Table</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include('partials/navbar') %>
+
   <div class="container">
-    <h1 style="color: var(--primary-color);">Discover Recipes</h1>
+    <h1>Discover Recipes</h1>
     <div class="recipe-grid">
       <% recipes.forEach(function(recipe) { %>
-        <div class="recipe-card">
+        <div class="recipe-card" onclick="location.href='/recipes/<%= recipe._id %>'">
           <% if (recipe.image) { %>
-            <img src="<%= recipe.image %>" alt="<%= recipe.title %>" style="width: 100%; height: 200px; object-fit: cover">
+            <img src="<%= recipe.image %>" alt="<%= recipe.title %>">
+          <% } else { %>
+            <div style="width: 100%; height: 240px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍽️</div>
           <% } %>
           <div class="recipe-card-content">
             <h3><%= recipe.title %></h3>
-            <p><strong>By:</strong> <%= recipe.author.username %></p>
+            <p style="margin-bottom: 0.5rem;"><strong>By:</strong> <%= recipe.author.username %></p>
             <p><%= recipe.instructions.substring(0, 100) %>...</p>
             <a class="btn btn-primary" href="/recipes/<%= recipe._id %>">View Details</a>
           </div>

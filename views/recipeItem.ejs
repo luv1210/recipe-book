@@ -4,60 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= recipe.title %> - Chef's Table</title>
-  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include('partials/navbar') %>
+
   <div class="container">
     <div class="recipe-detail">
       <div class="recipe-header">
-        <% if (recipe.image) { %>
-          <div class="recipe-image-container">
+        <div class="recipe-image-container">
+          <% if (recipe.image) { %>
             <img src="<%= recipe.image %>" alt="<%= recipe.title %>">
-          </div>
-        <% } %>
+          <% } else { %>
+            <div style="width: 100%; height: 400px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: 5rem;">🍽️</div>
+          <% } %>
+        </div>
         <div class="recipe-info-container">
-          <h1 style="color: var(--primary-color); margin-top: 0;"><%= recipe.title %></h1>
-          <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Shared by <strong><%= recipe.author.username %></strong> on <%= recipe.createdAt.toLocaleDateString() %></p>
+          <h1><%= recipe.title %></h1>
+          <p style="font-size: 1.1rem; color: var(--text-muted);">Shared by <strong style="color: var(--primary-color);"><%= recipe.author.username %></strong> on <%= recipe.createdAt.toLocaleDateString() %></p>
           
-          <div style="margin-bottom: 1.5rem;">
-            <h3 style="color: var(--accent-color);">Ingredients</h3>
-            <ul style="padding-left: 1.5rem;">
-              <% recipe.ingredients.forEach(function(ingredient) { %>
-                <li style="margin-bottom: 0.5rem;"><%= ingredient %></li>
-              <% }); %>
+          <div style="margin-top: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; border-bottom: 2px solid var(--accent-color); display: inline-block;">Ingredients</h3>
+            <ul class="ingredients-list">
+              <% recipe.ingredients.forEach(ingredient => { %>
+                <li><%= ingredient %></li>
+              <% }) %>
             </ul>
           </div>
         </div>
       </div>
 
-      <div style="margin-bottom: 2rem;">
-        <h3 style="color: var(--accent-color);">Instructions</h3>
-        <p style="line-height: 1.6;"><%= recipe.instructions %></p>
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem; border-bottom: 2px solid var(--accent-color); display: inline-block;">Instructions</h3>
+        <p style="white-space: pre-line; font-size: 1.1rem; line-height: 1.8;"><%= recipe.instructions %></p>
       </div>
 
       <div class="comment-section">
-        <h3 style="color: var(--primary-color);">Comments (<%= recipe.comments.length %>)</h3>
+        <h2>Comments (<%= recipe.comments.length %>)</h2>
+        
         <% if (user) { %>
-          <form action="/recipes/<%= recipe._id %>/comments" method="POST" style="margin-bottom: 2rem;">
+          <form action="/recipes/<%= recipe._id %>/comments" method="POST" style="margin: 2rem 0;">
             <div class="form-group">
-              <textarea name="text" rows="3" placeholder="Write a comment..." required></textarea>
+              <textarea name="text" rows="3" placeholder="Share your thoughts on this recipe..." required style="border-radius: var(--radius-md);"></textarea>
             </div>
-            <button class="btn btn-primary" type="submit">Post Comment</button>
+            <button type="submit" class="btn btn-primary">Post Comment</button>
           </form>
         <% } else { %>
-          <p><a href="/login">Login</a> to leave a comment.</p>
+          <p style="margin: 2rem 0; font-size: 1.1rem;">Please <a href="/login" style="color: var(--primary-color); font-weight: 600;">login</a> to leave a comment.</p>
         <% } %>
-        
+
         <div id="comments">
-          <% recipe.comments.forEach(function(comment) { %>
-            <div class="comment">
-              <span class="comment-author"><%= comment.author.username %></span>
-              <p style="margin: 0.5rem 0;"><%= comment.text %></p>
-              <span style="font-size: 0.8rem; color: #999;"><%= comment.createdAt.toLocaleDateString() %></span>
-            </div>
-          <% }); %>
+          <% if (recipe.comments.length === 0) { %>
+            <p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 2rem;">No comments yet. Be the first to share your thoughts!</p>
+          <% } else { %>
+            <% recipe.comments.forEach(function(comment) { %>
+              <div class="comment">
+                <span class="comment-author"><%= comment.author.username %></span>
+                <p style="margin: 0.75rem 0; font-size: 1rem;"><%= comment.text %></p>
+                <span style="font-size: 0.85rem; color: var(--text-muted);"><%= comment.createdAt.toLocaleDateString() %></span>
+              </div>
+            <% }); %>
+          <% } %>
         </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-light);">
+        <a href="/" class="btn btn-primary" style="background: var(--primary-color); color: white; padding: 0.8rem 2rem;">
+          ⬅️ Back to Home
+        </a>
       </div>
     </div>
   </div>

@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/recipe_book';
+const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://luv1210:<db_password>@cluster0.xxws7ec.mongodb.net/recipe-book';
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true

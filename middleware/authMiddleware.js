@@ -38,10 +38,15 @@ const setUser = (req, res, next) => {
   }
 };
 
-const authorizeRole = (role) => {
+const authorizeRole = (roles) => {
   return (req, res, next) => {
-    if (req.user.role !== role) {
-      return res.status(403).send('Access denied');
+    if (!req.user) return res.redirect('/login');
+
+    // Convert single role to array if necessary
+    const allowedRoles = Array.isArray(roles) ? roles : [roles];
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).send('Access denied. Your role does not have permission to perform this action.');
     }
     next();
   };

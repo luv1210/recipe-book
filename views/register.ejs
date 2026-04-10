@@ -10,30 +10,38 @@
   <%- include('partials/navbar') %>
 
   <div class="container">
-    <div style="max-width: 400px; margin: 4rem auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-      <h1 style="color: var(--primary-color); text-align: center;">Join Our Culinary Hub</h1>
+    <div class="form-card">
+      <h1 style="margin-bottom: 1rem;">Join the Kitchen</h1>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.1rem;">Create an account to share and discover amazing recipes.</p>
+      
       <% if (error) { %>
-        <p class="error-msg" style="text-align: center;"><%= error %></p>
+        <div style="background: #fee2e2; color: #dc2626; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 2rem; text-align: center; border: 1px solid #fecaca;">
+          <%= error %>
+        </div>
       <% } %>
+
       <form action="/register" method="POST">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" placeholder="Pick a username..." required>
+          <input type="text" id="username" name="username" placeholder="Choose a unique username" required>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Create a strong password..." required>
+          <input type="password" id="password" name="password" placeholder="Create a strong password" required>
         </div>
         <div class="form-group">
-          <label for="role">Role</label>
+          <label for="role">Your Role</label>
           <select id="role" name="role">
-            <option value="user">User (Share and discover)</option>
-            <option value="admin">Admin (Manage kitchen)</option>
+            <option value="user">Chef (Share & Discover)</option>
+            <option value="admin">Admin (Manage Kitchen)</option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 1rem;">Create Account</button>
       </form>
-      <p style="text-align: center; margin-top: 1.5rem; color: #666;">Already a member? <a href="/login" style="color: var(--accent-color);">Sign in here!</a></p>
+      
+      <p style="text-align: center; margin-top: 2.5rem; color: var(--text-muted);">
+        Already have an account? <a href="/login" style="color: var(--primary-color); font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--accent-color);">Sign in here</a>
+      </p>
     </div>
   </div>
 </body>

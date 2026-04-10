@@ -3,41 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Recipe - Chef's Table</title>
+  <title>Edit Recipe - Chef's Table</title>
   <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
+  <%- include('partials/navbar') %>
 
   <div class="container">
     <div class="form-card">
-      <h1>Share Your Recipe</h1>
-      <form id="recipeForm" action="/recipes" method="POST">
+      <h1>Edit Your Culinary Secret</h1>
+      <form id="editRecipeForm" action="/recipes/<%= recipe._id %>/update" method="POST">
         <div class="form-group">
           <label for="title">Recipe Title</label>
-          <input id="title" name="title" type="text" placeholder="Enter recipe name..." required>
+          <input id="title" name="title" type="text" placeholder="Enter recipe name..." required value="<%= recipe.title %>">
         </div>
         
         <div class="form-group">
           <label for="image">Recipe Image URL</label>
-          <input id="image" name="image" type="url" placeholder="https://example.com/image.jpg" required>
-          <div class="image-preview" id="imagePreview" style="margin-top: 1rem; display: none">
-            <img id="previewImg" src alt="Image preview" style="width: 100%; border-radius: var(--radius-sm); max-height: 200px; object-fit: cover;">
+          <input id="image" name="image" type="url" placeholder="https://example.com/image.jpg" required value="<%= recipe.image %>">
+          <div class="image-preview active" id="imagePreview" style="margin-top: 1rem; display: block">
+            <img id="previewImg" src="<%= recipe.image %>" alt="Image preview" style="width: 100%; border-radius: var(--radius-sm); max-height: 200px; object-fit: cover;">
           </div>
         </div>
         
         <div class="form-group">
           <label for="ingredients">Ingredients</label>
-          <input id="ingredients" name="ingredients" type="text" placeholder="Flour, Sugar, Eggs, Milk..." required>
+          <input id="ingredients" name="ingredients" type="text" placeholder="Flour, Sugar, Eggs, Milk..." required value="<%= recipe.ingredients.join(', ') %>">
           <small style="color: var(--text-muted); font-size: 0.8rem;">Separate each ingredient with a comma</small>
         </div>
         
         <div class="form-group">
           <label for="instructions">Cooking Instructions</label>
-          <textarea id="instructions" name="instructions" rows="6" placeholder="Describe the cooking process step by step..." required></textarea>
+          <textarea id="instructions" name="instructions" rows="6" placeholder="Describe the cooking process step by step..." required><%= recipe.instructions %></textarea>
         </div>
         
         <button class="btn btn-primary" type="submit" style="width: 100%;">
-          ✨ Publish Recipe ✨
+          ✨ Update Recipe ✨
         </button>
       </form>
     </div>
@@ -61,5 +62,5 @@
       }
     });
   </script>
-</%-></body>
+</body>
 </html>

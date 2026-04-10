@@ -4,28 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Recipes - Chef's Table</title>
-  <link href="/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include('partials/navbar') %>
+
   <div class="container">
-    <h1 style="color: var(--primary-color);">My Culinary Creations</h1>
+    <h1>My Culinary Creations</h1>
     <div class="recipe-grid">
       <% if (recipes.length === 0) { %>
-        <p>You haven't shared any recipes yet. <a href="/recipes/new">Share your first one!</a></p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: var(--bg-white); border-radius: var(--radius-lg); border: 1px dashed var(--border-light);">
+          <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 1.5rem;">You haven't shared any recipes yet.</p>
+          <a href="/recipes/new" class="btn btn-primary">Share Your First One!</a>
+        </div>
       <% } else { %>
         <% recipes.forEach(function(recipe) { %>
-          <div class="recipe-card">
+          <div class="recipe-card" onclick="location.href='/recipes/<%= recipe._id %>'">
             <% if (recipe.image) { %>
-              <img src="<%= recipe.image %>" alt="<%= recipe.title %>" style="width: 100%; height: 200px; object-fit: cover;">
+              <img src="<%= recipe.image %>" alt="<%= recipe.title %>">
+            <% } else { %>
+              <div style="width: 100%; height: 240px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍽️</div>
             <% } %>
             <div class="recipe-card-content">
               <h3><%= recipe.title %></h3>
               <p><%= recipe.instructions.substring(0, 100) %>...</p>
-              <div style="display: flex; gap: 1rem; align-items: center;">
-                <a class="btn btn-primary" href="/recipes/<%= recipe._id %>">View</a>
+              <div style="display: flex; gap: 1rem; align-items: center;" onclick="event.stopPropagation()">
+                <a class="btn btn-primary" href="/recipes/<%= recipe._id %>/edit" style="background: var(--primary-color); color: white;">Edit Recipe</a>
                 <form action="/recipes/<%= recipe._id %>/delete" method="POST" style="margin: 0;">
-                  <button class="btn" type="submit" style="background-color: #dc3545; color: white;">Delete</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
               </div>
             </div>

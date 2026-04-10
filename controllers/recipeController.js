@@ -1,25 +1,11 @@
 const Recipe = require('../models/Recipe');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
-const multer = require('multer');
-const path = require('path');
-
-// Multer storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage: storage });
 
 const getAllRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find().populate('author', 'username');
-    res.render('recipeList', { recipes });
+    res.render('recipeList', { recipes, page: 'recipes' });
   } catch (error) {
     res.status(500).send('Error fetching recipes');
   }
@@ -28,31 +14,28 @@ const getAllRecipes = async (req, res) => {
 const getMyRecipes = async (req, res) => {
   try {
     const recipes = await Recipe.find({ author: req.user.userId }).populate('author', 'username');
-    res.render('myRecipes', { recipes });
+    res.render('myRecipes', { recipes, page: 'my-recipes' });
   } catch (error) {
     res.status(500).send('Error fetching your recipes');
   }
 };
 
 const getRecipeForm = (req, res) => {
-  res.render('recipeForm', { recipe: null });
+  res.render('recipeForm', { recipe: null, page: 'new-recipe' });
 };
 
 const createRecipe = async (req, res) => {
   try {
-    const { title, ingredients, instructions } = req.body;
+    const { title, ingredients, instructions, image } = req.body;
     const ingredientsArray = ingredients.split(',').map(i => i.trim());
 
     const recipeData = {
       title,
       ingredients: ingredientsArray,
       instructions,
+      image, // Image URL from form
       author: req.user.userId
     };
-
-    if (req.file) {
-      recipeData.image = '/uploads/' + req.file.filename;
-    }
 
     const recipe = new Recipe(recipeData);
     await recipe.save();
@@ -75,7 +58,7 @@ const getRecipeDetails = async (req, res) => {
         populate: { path: 'author', select: 'username' }
       });
     if (!recipe) return res.status(404).send('Recipe not found');
-    res.render('recipeItem', { recipe });
+    res.render('recipeItem', { recipe, page: 'recipe-detail' });
   } catch (error) {
     res.status(500).send('Error fetching recipe details');
   }
@@ -96,6 +79,49 @@ const addComment = async (req, res) => {
     res.redirect(`/recipes/${req.params.id}`);
   } catch (error) {
     res.status(500).send('Error adding comment');
+  }
+};
+
+const getEditForm = async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) return res.status(404).send('Recipe not found');
+
+    // Check if user is author
+    if (recipe.author.toString() !== req.user.userId && req.user.role !== 'admin') {
+      return res.status(403).send('Unauthorized');
+    }
+
+    res.render('editRecipeForm', { recipe, page: 'edit-recipe' });
+  } catch (error) {
+    res.status(500).send('Error fetching recipe');
+  }
+};
+
+const updateRecipe = async (req, res) => {
+  try {
+    const { title, ingredients, instructions, image } = req.body;
+    const ingredientsArray = ingredients.split(',').map(i => i.trim());
+
+    const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) return res.status(404).send('Recipe not found');
+
+    // Check if user is author
+    if (recipe.author.toString() !== req.user.userId && req.user.role !== 'admin') {
+      return res.status(403).send('Unauthorized');
+    }
+
+    const recipeData = {
+      title,
+      ingredients: ingredientsArray,
+      instructions,
+      image // Image URL from form
+    };
+
+    await Recipe.findByIdAndUpdate(req.params.id, recipeData);
+    res.redirect('/my-recipes');
+  } catch (error) {
+    res.status(500).send('Error updating recipe');
   }
 };
 
@@ -120,11 +146,12 @@ const deleteRecipe = async (req, res) => {
 };
 
 module.exports = {
-  upload,
   getAllRecipes,
   getMyRecipes,
   getRecipeForm,
   createRecipe,
+  getEditForm,
+  updateRecipe,
   getRecipeDetails,
   addComment,
   deleteRecipe
