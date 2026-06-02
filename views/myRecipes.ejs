@@ -27,7 +27,7 @@
             <% } %>
             <div class="recipe-card-content">
               <h3><%= recipe.title %></h3>
-              <p><%= recipe.instructions.substring(0, 100) %>...</p>
+              <p><%= recipe.instructions ? recipe.instructions.substring(0, 100) + '...' : '' %></p>
               <div style="display: flex; gap: 1rem; align-items: center;" onclick="event.stopPropagation()">
                 <a class="btn btn-primary" href="/recipes/<%= recipe._id %>/edit" style="background: var(--primary-color); color: white;">Edit Recipe</a>
                 <form action="/recipes/<%= recipe._id %>/delete" method="POST" style="margin: 0;">

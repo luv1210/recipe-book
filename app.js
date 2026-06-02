@@ -10,11 +10,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
-const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://luv1210:<db_password>@cluster0.xxws7ec.mongodb.net/recipe-book';
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+const mongoURI = process.env.MONGODB_URI;
+if (!mongoURI) {
+  console.error('Error: MONGODB_URI is not defined in environment variables');
+  process.exit(1);
+}
+
+mongoose.connect(mongoURI)
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 

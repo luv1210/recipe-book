@@ -21,8 +21,8 @@
           <% } %>
           <div class="recipe-card-content">
             <h3><%= recipe.title %></h3>
-            <p style="margin-bottom: 0.5rem;"><strong>By:</strong> <%= recipe.author.username %></p>
-            <p><%= recipe.instructions.substring(0, 100) %>...</p>
+            <p style="margin-bottom: 0.5rem;"><strong>By:</strong> <%= recipe.author ? recipe.author.username : 'Anonymous' %></p>
+            <p><%= recipe.instructions ? recipe.instructions.substring(0, 100) + '...' : '' %></p>
             <a class="btn btn-primary" href="/recipes/<%= recipe._id %>">View Details</a>
           </div>
         </div>
