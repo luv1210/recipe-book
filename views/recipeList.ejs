@@ -10,6 +10,11 @@
   <%- include('partials/navbar') %>
 
   <div class="container">
+    <% if (locals.error) { %>
+      <div style="background: #fee2e2; color: #b91c1c; padding: 1rem; border-radius: var(--radius-md); margin-bottom: 2rem; text-align: center;">
+        <%= error %>
+      </div>
+    <% } %>
     <h1>Discover Recipes</h1>
     <div class="recipe-grid">
       <% recipes.forEach(function(recipe) { %>
